@@ -1,0 +1,136 @@
+/* ============================================================
+   DESIGN TOKENS
+   Single source of truth for all visual primitives.
+   Edit here to change colors, spacing, typography, shadows
+   across the entire app — both demo and design-system pages.
+   ============================================================ */
+
+:root {
+  /* ── Core palette ── */
+  --primary: #6138D8;
+  --primary-dark: #262861;
+  --primary-light: #F1ECFE;
+  --primary-mid: #8E79D6;
+  --primary-pale: #E4DDF8;
+  --primary-border: #C0B5E8;
+  --focus-ring: #E1D7FE;
+  --active-border: #A589FA;
+  --primary-alpha-10: rgba(97,56,216,0.10);
+  --primary-alpha-15: rgba(97,56,216,0.15);
+
+  --text: #20134B;
+  --text-muted: #676990;
+
+  --border: #D3D4E4;
+  --border-light: #EAE8EF;
+
+  --bg-card: #F1F1F7;
+  --bg: #FAFAFC;
+  --white: #FFFFFF;
+
+  /* ── Semantic colors ── */
+  --red: #E53E3E;
+  --red-light: #FFF5F5;
+  --green: #38A169;
+  --orange: #BC7E28;
+  --orange-light: #FFFAF0;
+  --pink-light: #FDF2F8;
+  --pink-mid: #FCE7F3;
+  --pink: #DB2777;
+
+  --badge-info-bg: #EBF4FF;
+  --badge-info-text: #2B6CB0;
+
+  --avatar-orange: #F97316;
+  --avatar-blue: #7DD3FC;
+
+  /* ── Spacing (7-step, 4px grid + 2px micro) ── */
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 24px;
+  --space-7: 32px;
+
+  /* ── Border Radius ── */
+  --r-radius-sm: 4px;
+  --r-radius-md: 8px;
+  --r-radius-lg: 12px;
+  --r-radius-pill: 999px;
+  --r-radius-circle: 50%;
+
+  /* Legacy aliases (used by older demo styles) */
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* ── Typography ── */
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 14px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* ── Shadows ── */
+  --r-shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --r-shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --r-shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05);
+  --r-shadow-overlay: 0 12px 40px rgba(32,19,75,0.18), 0 2px 8px rgba(0,0,0,0.06);
+
+  /* Legacy aliases */
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05);
+
+  /* ── Transition timing (150-300ms for micro-interactions) ── */
+  --r-duration-fast: 120ms;
+  --r-duration-normal: 200ms;
+  --r-duration-slow: 300ms;
+  --r-easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --r-easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --r-easing-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ── Z-index scale ── */
+  --r-z-dropdown: 100;
+  --r-z-sticky: 200;
+  --r-z-overlay: 500;
+  --r-z-modal: 1000;
+  --r-z-tooltip: 1100;
+  --r-z-fab: 1200;
+  --r-z-toast: 1300;
+
+  /* ── Opacity ── */
+  --r-opacity-disabled: 0.45;
+  --r-opacity-hover: 0.08;
+
+  /* ── Extended spacing ── */
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 80px;
+
+  /* ── Extended typography ── */
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+}
+
+/* ── Reduced motion: collapse all transition durations ── */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --r-duration-fast: 0ms;
+    --r-duration-normal: 0ms;
+    --r-duration-slow: 0ms;
+  }
+}
+
+/* ── Theme v2 scaffold ── */
+
+[data-theme="v2"] {
+  /* Override tokens here when polished UI designs are ready.
+     r-* components will automatically pick up new values.
+     Existing demo styles remain unaffected. */
+}

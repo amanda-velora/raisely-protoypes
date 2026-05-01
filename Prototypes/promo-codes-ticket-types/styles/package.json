@@ -1,0 +1,6 @@
+{
+  "name": "@raisely/styles",
+  "version": "0.1.0",
+  "description": "Shared Raisely design tokens and component styles",
+  "files": ["tokens.css", "components.css", "pages.css"]
+}

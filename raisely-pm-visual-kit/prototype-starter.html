@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<title>TEMPLATE — Interactive Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/pages.css">
+<style>
+/* Inline overrides kept minimal — all base styles live in styles/*.css */
+.ds-ref-link {
+  position: fixed; bottom: 20px; right: 20px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  font-size: var(--text-xs); font-weight: var(--font-medium);
+  color: var(--text-muted); text-decoration: none;
+  background: var(--white); border: 1px solid var(--border-light);
+  border-radius: var(--r-radius-pill);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  z-index: var(--r-z-sticky);
+  opacity: 0.7;
+  transition: opacity var(--r-duration-fast) var(--r-easing-default),
+              border-color var(--r-duration-fast) var(--r-easing-default);
+}
+.ds-ref-link:hover { opacity: 1; border-color: var(--primary-border); color: var(--primary); }
+</style>
+</head>
+<body>
+<div id="app" class="app">
+
+  <!-- Sidebar (org home vs campaign — filled by renderSidebar()) -->
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation"></aside>
+
+  <!-- Org-level settings menu (middle column) -->
+  <div class="settings-nav org-settings-nav" id="org-settings-nav" style="display:none;" aria-hidden="true"></div>
+
+  <!-- Main content -->
+  <main class="main" id="main-content"><p style="padding:20px;color:var(--text-muted);">Loading…</p></main>
+
+</div>
+
+<!-- Toast container -->
+<div class="r-toast-container" id="toast-container"></div>
+
+<!-- Design System reference link -->
+<a href="design-system.html" class="ds-ref-link" title="Open Design System reference">
+  <i class="fa-regular fa-swatchbook"></i> Design System
+</a>
+
+<script>
+let APP_VERSION = '…';
+fetch('version.json').then(r => r.json()).then(v => {
+  APP_VERSION = v.version;
+  document.querySelectorAll('.js-version').forEach(el => el.textContent = 'v' + v.version);
+}).catch(() => {});
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+   Add your project-specific state properties here.
+   ═══════════════════════════════════════════════════════ */
+const state = {
+  appArea: 'org-home',         // 'org-home' | 'campaign'
+  orgHomeTab: 'campaigns',     // which org-level nav item is active
+  orgSettingsRoute: null,      // which org settings item is selected
+  campaignName: 'My Campaign',
+  campaignSection: 'dashboard',
+};
+
+/* ═══════════════════════════════════════════════════════
+   SIDEBAR
+   Renders either the org-home sidebar or campaign sidebar
+   based on state.appArea. Modify nav items as needed.
+   ═══════════════════════════════════════════════════════ */
+function renderSidebar() {
+  const el = document.getElementById('sidebar');
+  if (!el) return;
+
+  if (state.appArea === 'org-home') {
+    el.className = 'sidebar sidebar--home';
+    el.innerHTML = `
+      <div class="sidebar__top-row">
+        <img src="assets/raisely-logo.png" alt="Raisely" class="sidebar-home__logo">
+        <div class="sidebar__search">
+          <i class="fa-regular fa-magnifying-glass"></i>
+          <span>Search</span>
+        </div>
+      </div>
+      <nav class="sidebar-home__nav" aria-label="Organisation">
+        ${[
+          { key: 'campaigns', icon: 'fa-regular fa-bullhorn', label: 'Campaigns' },
+          { key: 'people', icon: 'fa-regular fa-user', label: 'People' },
+          { key: 'reports', icon: 'fa-regular fa-chart-pie', label: 'Reports' },
+          { key: 'messages', icon: 'fa-regular fa-envelope', label: 'Messages' },
+          { key: 'settings', icon: 'fa-regular fa-gear', label: 'Settings' },
+        ].map(item => {
+          const active = state.orgHomeTab === item.key ? ' sidebar-home__item--active r-nav-item--active' : '';
+          return `<button type="button" class="sidebar-home__item r-nav-item${active}"
+            onclick="setOrgHomeTab('${item.key}')">
+            <i class="${item.icon}"></i> ${item.label}
+          </button>`;
+        }).join('')}
+      </nav>
+      <div class="sidebar-home__footer">
+        <div class="sidebar-home__user">
+          <div class="sidebar-home__avatar r-avatar" aria-hidden="true">U</div>
+          <div class="sidebar-home__name">User Name</div>
+        </div>
+        <button type="button" class="sidebar-home__switch">
+          <i class="fa-regular fa-repeat" aria-hidden="true"></i> Switch Account
+        </button>
+        <div class="sidebar__version js-version">v${APP_VERSION}</div>
+      </div>
+    `;
+    return;
+  }
+
+  el.className = 'sidebar';
+  el.innerHTML = `
+    <div class="sidebar__top-row">
+      <img src="assets/raisely-logo.png" alt="Raisely" class="sidebar__logo">
+      <div class="sidebar__search">
+        <i class="fa-regular fa-magnifying-glass"></i>
+        <span>Search</span>
+      </div>
+    </div>
+    <div class="sidebar__campaign" role="button" tabindex="0" title="Back to organisation home"
+         onclick="goToOrgHome()">
+      <i class="fa-regular fa-chevron-left" aria-hidden="true"></i>
+      <span>${state.campaignName}</span>
+    </div>
+    <nav class="sidebar__nav" aria-label="Campaign">
+      ${['Dashboard','Pages','Blog','Design','Messages','Profiles','Donations','Tickets','Reports','Settings'].map(label => {
+        const key = label.toLowerCase();
+        const active = state.campaignSection === key ? ' sidebar__item--active r-nav-item--active' : '';
+        return `<div class="sidebar__item r-nav-item${active}" role="button" tabindex="0"
+          onclick="setCampaignSection('${key}')">${label}</div>`;
+      }).join('')}
+    </nav>
+    <div class="sidebar__footer">
+      <a class="sidebar__view-site" href="javascript:void(0)">
+        View your site <i class="fa-regular fa-arrow-up-right-from-square"></i>
+      </a>
+    </div>
+    <div class="sidebar__user">
+      <div class="sidebar__avatar r-avatar">U</div>
+      <div>
+        <div class="sidebar__username">User Name</div>
+        <div class="sidebar__switch"><i class="fa-regular fa-repeat"></i> Switch Account</div>
+      </div>
+    </div>
+    <div class="sidebar__version js-version">v${APP_VERSION}</div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════════ */
+function setOrgHomeTab(tab) {
+  state.orgHomeTab = tab;
+  if (tab !== 'settings') state.orgSettingsRoute = null;
+  render();
+}
+
+function goToOrgHome() {
+  state.appArea = 'org-home';
+  state.orgHomeTab = 'campaigns';
+  state.orgSettingsRoute = null;
+  render();
+}
+
+function setOrgSettingsRoute(route) {
+  state.orgSettingsRoute = route;
+  render();
+}
+
+function enterCampaignWorkspace(name) {
+  state.appArea = 'campaign';
+  if (name) state.campaignName = name;
+  state.campaignSection = 'dashboard';
+  render();
+}
+
+function setCampaignSection(section) {
+  state.campaignSection = section;
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════
+   ORG SETTINGS NAV (middle column)
+   Add or remove menu items to match your project scope.
+   ═══════════════════════════════════════════════════════ */
+function orgSettingsMenuItem(route, iconClass, title, desc, badge, opts) {
+  const selected = state.orgSettingsRoute === route;
+  const extra = (opts && opts.emphasis && selected) ? ' org-sn-item--selected' : '';
+  const active = selected ? ' sn-item--active' : '';
+  const featured = opts && opts.featuredBorder && selected ? ' sn-item--featured-border' : '';
+  const newB = opts && opts.newBadge ? '<span class="new-badge">New</span>' : '';
+  return `
+    <div class="sn-item${active}${extra}${featured}" role="button" tabindex="0"
+         onclick="setOrgSettingsRoute('${route}')">
+      <div class="sn-item__icon"><i class="${iconClass}"></i></div>
+      <div class="sn-item__content">
+        <div class="org-sn-item__title-row">
+          <span class="sn-item__title">${title}</span>
+          ${newB}
+          ${badge ? `<span class="support-badge">${badge}</span>` : ''}
+        </div>
+        ${desc ? `<div class="sn-item__desc">${desc}</div>` : ''}
+      </div>
+      <i class="fa-regular fa-chevron-right sn-item__chevron" aria-hidden="true"></i>
+    </div>
+  `;
+}
+
+function renderOrgSettingsNav() {
+  return `
+    <h2 class="settings-nav__title">Settings</h2>
+    <div class="settings-nav__list">
+      ${orgSettingsMenuItem('organisation', 'fa-regular fa-building', 'Organisation', 'Update your organisation details')}
+      ${orgSettingsMenuItem('billing', 'fa-regular fa-credit-card', 'Billing', 'View invoices and update your billing information.', null, { featuredBorder: true })}
+      ${orgSettingsMenuItem('team', 'fa-regular fa-user-circle', 'Team', 'Invite team members to your Raisely account.')}
+      ${orgSettingsMenuItem('custom-fields', 'fa-regular fa-bars', 'Custom Fields', 'Manage the custom fields for your account.')}
+      ${orgSettingsMenuItem('donation-designations', 'fa-regular fa-chart-pie', 'Donation designations', 'Create and manage your organisation\'s donation designations.', null, { newBadge: true })}
+      ${orgSettingsMenuItem('developers', 'fa-regular fa-code', 'Developers', 'Access developer tools for your websites')}
+      ${orgSettingsMenuItem('saml-sso', 'fa-regular fa-key', 'SAML SSO', 'Configure your SAML SSO integration')}
+      ${orgSettingsMenuItem('reports', 'fa-regular fa-file-arrow-down', 'Reports', 'Download organisation-wide custom reports.')}
+      ${orgSettingsMenuItem('email-sending', 'fa-regular fa-envelope', 'Email Sending Domain', 'Manage your email sending domain.')}
+      ${orgSettingsMenuItem('interactions', 'fa-regular fa-bars-staggered', 'Interactions', 'Manage your interaction categories and settings.')}
+      ${orgSettingsMenuItem('tags', 'fa-regular fa-tag', 'Tags', 'Manage your tags.')}
+      ${orgSettingsMenuItem('segments', 'fa-regular fa-circle-nodes', 'Segments', 'Manage your segments.')}
+      ${orgSettingsMenuItem('media-library', 'fa-regular fa-image', 'Media Library', 'Organisational level images and files')}
+      ${orgSettingsMenuItem('integrations', 'fa-regular fa-arrows-rotate', 'Integrations', 'Organisational level integrations')}
+      ${orgSettingsMenuItem('internal-admin', 'fa-regular fa-list-ul', 'Internal Admin Tools', 'Management tools for Raisely', 'Support admin only', { emphasis: true })}
+      ${orgSettingsMenuItem('org-readiness', 'fa-regular fa-square-check', 'Organization Readiness', 'Organization readiness checks', 'Support admin only')}
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════ */
+function showToast(type, message) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+  const toast = document.createElement('div');
+  toast.className = `r-toast r-toast--${type}`;
+  toast.innerHTML = `
+    <span class="r-toast__icon"><i class="fa-regular ${icons[type]}"></i></span>
+    <span class="r-toast__message">${message}</span>
+    <button class="r-toast__close" onclick="this.parentElement.remove()"><i class="fa-regular fa-xmark"></i></button>
+  `;
+  container.appendChild(toast);
+  setTimeout(() => { if (toast.parentElement) toast.remove(); }, 4000);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN CONTENT
+   Replace renderMainContent() with your project-specific
+   page rendering. The org-home shell and campaign fallback
+   are provided — just add your sections.
+   ═══════════════════════════════════════════════════════ */
+function renderOrgHomeContent() {
+  if (state.orgHomeTab === 'campaigns') {
+    return `
+      <div class="campaigns-page">
+        <div class="campaigns-topbar">
+          <div class="campaigns-topbar__title">Campaigns</div>
+          <div class="campaigns-topbar__actions">
+            <div class="campaigns-search"><i class="fa-regular fa-magnifying-glass"></i> <span>Search</span></div>
+            <button class="campaigns-create-btn" onclick="showToast('info','Campaign creator coming soon.')"><i class="fa-regular fa-plus"></i> New campaign</button>
+          </div>
+        </div>
+        <div class="campaigns-grid-area">
+          <div class="campaigns-grid">
+            <div class="campaign-card" onclick="enterCampaignWorkspace('${state.campaignName.replace(/'/g, "\\'")}')">
+              <div class="campaign-card__overlay">
+                <div class="campaign-card__img"></div>
+                <div class="campaign-card__badges"><span class="campaign-card__badge">Active</span></div>
+              </div>
+              <div class="campaign-card__info">
+                <div class="campaign-card__name">${state.campaignName}</div>
+                <div class="campaign-card__meta"><span class="campaign-card__meta-item">Click to open</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  if (state.orgHomeTab === 'settings') {
+    const label = state.orgSettingsRoute
+      ? state.orgSettingsRoute.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      : 'Organisation';
+    return `
+      <div style="padding:var(--space-5) var(--space-6);">
+        <h1 class="main__title">${label}</h1>
+        <div class="card" style="max-width:600px;">
+          <div class="card__heading">${label} Settings</div>
+          <div class="card__desc">Select an item from the settings menu on the left.</div>
+        </div>
+      </div>`;
+  }
+
+  const label = state.orgHomeTab.charAt(0).toUpperCase() + state.orgHomeTab.slice(1);
+  return `
+    <div style="padding:var(--space-5) var(--space-6);">
+      <h1 class="main__title">${label}</h1>
+      <div class="card"><div class="card__desc">Replace this with your ${label.toLowerCase()} UI.</div></div>
+    </div>`;
+}
+
+function renderMainContent() {
+  if (state.appArea === 'org-home') return renderOrgHomeContent();
+
+  return `
+    <h1 class="main__title">${state.campaignSection.charAt(0).toUpperCase() + state.campaignSection.slice(1)}</h1>
+    <div class="card">
+      <div class="card__heading">Campaign: ${state.campaignName}</div>
+      <div class="card__desc">
+        This is the <strong>${state.campaignSection}</strong> section.
+        Replace this content with your campaign-level UI.
+      </div>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════ */
+function render() {
+  renderSidebar();
+
+  const orgNav = document.getElementById('org-settings-nav');
+  if (orgNav) {
+    const showOrgSettings = state.appArea === 'org-home' && state.orgHomeTab === 'settings';
+    if (showOrgSettings) {
+      orgNav.style.display = '';
+      orgNav.removeAttribute('aria-hidden');
+      orgNav.innerHTML = renderOrgSettingsNav();
+    } else {
+      orgNav.style.display = 'none';
+      orgNav.setAttribute('aria-hidden', 'true');
+      orgNav.innerHTML = '';
+    }
+  }
+
+  const app = document.getElementById('app');
+  if (app) app.classList.toggle('app--org-home', state.appArea === 'org-home');
+
+  document.getElementById('main-content').innerHTML = renderMainContent();
+}
+
+render();
+</script>
+</body>
+</html>

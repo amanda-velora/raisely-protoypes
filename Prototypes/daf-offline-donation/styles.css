@@ -1,0 +1,381 @@
+/* DAF offline donation prototype — composes raisely-pm-visual-kit tokens + r-* only */
+
+#toast-container.r-toast-container {
+  z-index: 10000;
+}
+
+.daf-icon-btn {
+  background: none;
+  border: none;
+  padding: 0 0 0 4px;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  opacity: 0.7;
+}
+.daf-icon-btn:hover {
+  opacity: 1;
+  color: var(--primary);
+}
+
+/* Modal */
+.daf-modal-overlay {
+  z-index: 9000;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.daf-modal {
+  max-width: 520px;
+  width: 92%;
+  max-height: min(92vh, 720px);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  padding-bottom: var(--space-5);
+}
+
+.daf-modal__title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--primary-dark);
+  margin: 0 0 var(--space-4);
+  flex-shrink: 0;
+}
+
+.daf-modal__body {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding-right: var(--space-1);
+  margin-right: calc(-1 * var(--space-1));
+}
+
+.daf-req {
+  color: var(--red);
+  font-weight: var(--font-bold);
+}
+
+.daf-opt {
+  color: var(--text-muted);
+  font-weight: var(--font-medium);
+  font-size: var(--text-sm);
+}
+
+.daf-field-hint {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+  line-height: 1.45;
+}
+
+.daf-search-wrap {
+  position: relative;
+}
+.daf-search-wrap .r-field__input {
+  padding-right: var(--space-7);
+}
+.daf-search-wrap i {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: var(--text-md);
+  pointer-events: none;
+}
+
+.daf-amount-row {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.daf-amount-row__prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+
+.daf-amount-row__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.daf-amount-row__currency {
+  flex-shrink: 0;
+  min-width: 5.5rem;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-base);
+  font-family: inherit;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-radius-md);
+  background: var(--white);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.daf-textarea-sm {
+  min-height: 88px;
+}
+
+/* DAF conditional section */
+.daf-details {
+  padding-top: var(--space-5);
+  margin-bottom: var(--space-4);
+  border-top: 1px solid var(--border-light);
+}
+
+.daf-details__heading-wrap {
+  margin-bottom: var(--space-4);
+}
+
+.daf-details__heading {
+  font-size: var(--text-md);
+  font-weight: var(--font-semibold);
+  color: var(--primary-dark);
+  margin: 0;
+}
+
+.daf-details__grid .dropdown-select {
+  width: 100%;
+}
+
+.daf-select-full {
+  width: 100%;
+}
+
+/* People picker */
+.daf-picker__combo {
+  position: relative;
+}
+
+.daf-picker__list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + var(--space-1));
+  z-index: var(--r-z-dropdown);
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+  background: var(--white);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--r-radius-md);
+  box-shadow: var(--r-shadow-md);
+}
+
+.daf-picker__item {
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  font-size: var(--text-base);
+  color: var(--text);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.daf-picker__item:hover,
+.daf-picker__item:focus-visible {
+  background: var(--primary-light);
+  outline: none;
+}
+
+.daf-picker__item-sub {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.daf-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  min-height: 0;
+}
+
+.daf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--r-radius-pill);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary-border);
+}
+
+.daf-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-radius-circle);
+  background: rgba(97, 56, 216, 0.12);
+  color: var(--primary-dark);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  line-height: 1;
+}
+
+.daf-chip__remove:hover {
+  background: rgba(97, 56, 216, 0.2);
+}
+
+.daf-btn-compact {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  margin-top: var(--space-3);
+  align-self: flex-start;
+}
+
+.daf-donor-name-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.daf-donor-name-row .r-field__input {
+  flex: 1;
+  min-width: 140px;
+}
+
+.daf-contact-banner {
+  margin-top: var(--space-3);
+  border: 1.5px solid var(--primary-border);
+}
+
+.daf-contact-banner__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) !important;
+}
+
+.daf-contact-banner__icon {
+  color: var(--green);
+  font-size: var(--text-lg);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.daf-contact-banner__text {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--primary-dark);
+  line-height: 1.45;
+}
+
+/* Field errors */
+.r-field__error {
+  font-size: var(--text-sm);
+  color: var(--red);
+  margin: var(--space-2) 0 0;
+}
+
+.r-field__input--invalid,
+.admin-panel__textarea.r-field__input--invalid {
+  border-color: var(--red);
+}
+
+.admin-panel__textarea.r-field__input--invalid:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15);
+}
+
+/* Footer actions */
+.daf-modal__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-light);
+}
+
+.daf-modal__actions-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.daf-modal__btn-cancel {
+  background: var(--bg-card);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--border-light);
+}
+
+.daf-modal__btn-cancel:hover {
+  background: var(--border-light);
+}
+
+.daf-modal__btn-save {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary-border);
+}
+
+.daf-modal__btn-save:hover {
+  background: var(--primary-pale);
+  border-color: var(--primary-border);
+}
+
+/* Modal hidden (after Cancel / optional close) */
+.daf-modal-overlay.is-hidden {
+  display: none;
+}
+
+@media (max-width: 540px) {
+  .daf-modal__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .daf-modal__actions-right {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .daf-modal__actions-right .r-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .daf-modal__btn-cancel {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .daf-donor-name-row {
+    flex-direction: column;
+  }
+
+  .daf-donor-name-row .r-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

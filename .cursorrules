@@ -1,0 +1,19 @@
+# Raisely Prototype Rules
+
+## Design System
+All prototypes must follow the Raisely design kit located in `/raisely-pm-visual-kit/`.
+- Use styles from `/raisely-pm-visual-kit/styles/` — do not invent new CSS variables or override existing ones
+- Use assets from `/raisely-pm-visual-kit/assets/` for logos, icons, and imagery
+- Reference `/raisely-pm-visual-kit/readme.md` and any `.md` files for component and usage guidelines
+- Match the HTML patterns shown in `/raisely-pm-visual-kit/*.html` for structure and class naming
+
+## Prototype Standards
+- All prototypes are static HTML/CSS (no frameworks unless already in the design kit)
+- Mobile-responsive by default
+- No placeholder lorem ipsum — use realistic Raisely-style copy (fundraising, campaigns, donations)
+- Each prototype lives in its own folder under `/prototypes/`
+- Each prototype should be self-contained in a single folder so it can be deployed via Netlify Drop for stakeholder sharing.
+
+## Tone / Context
+These are feature mockups and campaign pages for a fundraising platform called Raisely.
+Stakeholders reviewing these expect them to look like production Raisely pages.

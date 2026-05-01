@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add a Donation — DAF grant (prototype) | Raisely</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/pages.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <aside class="sidebar" aria-label="Campaign">
+      <div class="sidebar__top-row">
+        <img src="assets/raisely-logo.png" alt="Raisely" class="sidebar__logo" width="32" height="32">
+        <div class="sidebar__search">
+          <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+          <span>Search</span>
+        </div>
+      </div>
+      <div class="sidebar__campaign">
+        <i class="fa-regular fa-chevron-left" aria-hidden="true"></i>
+        <span>Amanda Test Campaign</span>
+      </div>
+      <nav class="sidebar__nav" aria-label="Campaign">
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Dashboard</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Pages</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Blog</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Design</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Messages</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Profiles</div>
+        <div class="sidebar__item sidebar__item--active r-nav-item r-nav-item--active" aria-current="page">Donations</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Tickets</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Reports</div>
+        <div class="sidebar__item r-nav-item" role="button" tabindex="0">Settings</div>
+      </nav>
+      <div class="sidebar__footer">
+        <a class="sidebar__view-site" href="javascript:void(0)">View your site <i class="fa-regular fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+        <div class="sidebar__status">
+          <span class="sidebar__status-dot" aria-hidden="true"></span>
+          Payments disabled
+        </div>
+      </div>
+      <div class="sidebar__user">
+        <div class="sidebar__avatar" aria-hidden="true">A</div>
+        <div>
+          <div class="sidebar__username">Amanda Aubé</div>
+          <div class="sidebar__switch"><i class="fa-regular fa-repeat" aria-hidden="true"></i> Switch Account</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main" id="main-content">
+      <div class="donations-admin">
+        <div class="donations-toolbar">
+          <h1 class="donations-toolbar__title">Donations</h1>
+          <div class="donations-toolbar__actions">
+            <div class="donations-filter-pill" role="status">
+              <i class="fa-regular fa-filter" aria-hidden="true"></i>
+              Successful
+              <button type="button" class="daf-icon-btn" aria-label="Clear filter"><i class="fa-regular fa-xmark" aria-hidden="true"></i></button>
+            </div>
+            <div class="donations-search">
+              <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+              <input type="search" placeholder="Find a donation..." aria-label="Find a donation">
+            </div>
+            <button type="button" class="r-btn r-btn--primary donations-create" id="btn-create-donation" aria-haspopup="dialog" aria-controls="add-donation-modal">
+              + Create Donation
+            </button>
+          </div>
+        </div>
+
+        <article class="donation-card">
+          <button type="button" class="donation-card__header">
+            <div class="donation-card__header-left">
+              <div class="donation-card__amt-box">$52.50</div>
+              <div class="donation-card__summary">
+                <span class="donation-card__name">amanda aube</span>
+                <span class="donation-card__sub">CAD / Donated to Amanda Test Campaign</span>
+              </div>
+            </div>
+            <div class="donation-card__meta">
+              <span>2 days ago</span>
+              <i class="fa-regular fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </button>
+        </article>
+
+        <article class="donation-card">
+          <button type="button" class="donation-card__header">
+            <div class="donation-card__header-left">
+              <div class="donation-card__amt-box">$50.00</div>
+              <div class="donation-card__summary">
+                <span class="donation-card__name">Amanda Test</span>
+                <span class="donation-card__sub">AUD / Donated to Amanda Test Campaign</span>
+              </div>
+            </div>
+            <div class="donation-card__meta">
+              <span>12 days ago</span>
+              <i class="fa-regular fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </button>
+        </article>
+
+        <article class="donation-card">
+          <button type="button" class="donation-card__header">
+            <div class="donation-card__header-left">
+              <div class="donation-card__amt-box">$120.00</div>
+              <div class="donation-card__summary">
+                <span class="donation-card__name">Community Giving Circle</span>
+                <span class="donation-card__sub">AUD / Donated to Amanda Test Campaign</span>
+              </div>
+            </div>
+            <div class="donation-card__meta">
+              <span>18 days ago</span>
+              <i class="fa-regular fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </button>
+        </article>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add a Donation modal -->
+  <div class="r-modal-overlay daf-modal-overlay" id="modal-overlay" role="presentation">
+    <div
+      class="r-modal daf-modal"
+      id="add-donation-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="daf-modal-title"
+    >
+      <h2 class="daf-modal__title" id="daf-modal-title">Add a Donation</h2>
+
+      <div class="daf-modal__body">
+        <form id="add-donation-form" novalidate>
+          <div class="r-field">
+            <label class="r-field__label" for="donated-to">Donated to <span class="daf-req" aria-hidden="true">*</span></label>
+            <div class="daf-search-wrap">
+              <input class="r-field__input" type="text" id="donated-to" name="donatedTo" value="Amanda Test Campaign" autocomplete="off">
+              <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+            </div>
+          </div>
+
+          <div class="r-field">
+            <label class="r-field__label" for="amount">Amount <span class="daf-req" aria-hidden="true">*</span></label>
+            <div class="daf-amount-row">
+              <span class="daf-amount-row__prefix" aria-hidden="true">$</span>
+              <input class="r-field__input daf-amount-row__input" type="text" id="amount" name="amount" inputmode="decimal" value="100.00">
+              <select class="dropdown-select daf-amount-row__currency" id="currency" name="currency" aria-label="Currency">
+                <option value="AUD" selected>AUD</option>
+                <option value="CAD">CAD</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="r-field">
+            <label class="r-field__label" for="donation-date">Date <span class="daf-req" aria-hidden="true">*</span></label>
+            <input class="r-field__input" type="date" id="donation-date" name="date" value="2026-04-29">
+          </div>
+
+          <div class="admin-panel__field-grid">
+            <div class="r-field" style="margin-bottom: var(--space-4);">
+              <label class="r-field__label" for="first-name">First Name <span class="daf-req" aria-hidden="true">*</span></label>
+              <input class="r-field__input" type="text" id="first-name" name="firstName" value="Jordan">
+            </div>
+            <div class="r-field" style="margin-bottom: var(--space-4);">
+              <label class="r-field__label" for="last-name">Last Name <span class="daf-req" aria-hidden="true">*</span></label>
+              <input class="r-field__input" type="text" id="last-name" name="lastName" value="Rivera">
+            </div>
+          </div>
+
+          <div class="r-field">
+            <label class="r-field__label" for="email">Email <span class="daf-req" aria-hidden="true">*</span></label>
+            <input class="r-field__input" type="email" id="email" name="email" value="jordan.rivera@example.org" autocomplete="email">
+          </div>
+
+          <div class="admin-panel__checkbox-row">
+            <input type="checkbox" id="daf-grant-check" name="dafGrant" aria-controls="daf-details" aria-expanded="false">
+            <label for="daf-grant-check">This is a Donor-Advised Fund (DAF) grant</label>
+          </div>
+
+          <div id="daf-details" class="daf-details" hidden>
+            <div class="daf-details__heading-wrap">
+              <h3 class="daf-details__heading">DAF details</h3>
+            </div>
+
+            <div class="r-field">
+              <label class="r-field__label" for="daf-org">DAF Sponsoring Organization <span class="daf-req" aria-hidden="true">*</span></label>
+              <input class="r-field__input" type="text" id="daf-org" name="dafOrg" placeholder="e.g., Fidelity Charitable" autocomplete="organization">
+              <p class="r-field__error" id="daf-org-error" hidden>This field is required.</p>
+            </div>
+
+            <div class="r-field">
+              <label class="r-field__label" for="daf-grant-id">DAF Grant ID / Reference Number <span class="daf-req" aria-hidden="true">*</span></label>
+              <input class="r-field__input" type="text" id="daf-grant-id" name="dafGrantId" placeholder="e.g., 24-DAF-103948" autocomplete="off">
+              <p class="r-field__error" id="daf-grant-id-error" hidden>This field is required.</p>
+            </div>
+
+            <div class="r-field">
+              <label class="r-field__label" for="daf-purpose">DAF Purpose / Restriction <span class="daf-req" aria-hidden="true">*</span></label>
+              <textarea class="admin-panel__textarea daf-textarea-sm" id="daf-purpose" name="dafPurpose" rows="3" placeholder="e.g., Restricted to Youth Program"></textarea>
+              <p class="r-field__error" id="daf-purpose-error" hidden>This field is required.</p>
+            </div>
+
+            <div class="r-field daf-person-field">
+              <label class="r-field__label" for="person-search">Associated donor (Person record) <span class="daf-opt">Optional</span></label>
+              <p class="daf-field-hint">Search and select people to link to this grant. You can associate more than one person.</p>
+              <div class="daf-picker">
+                <div class="daf-picker__combo">
+                  <input
+                    type="text"
+                    class="r-field__input"
+                    id="person-search"
+                    autocomplete="off"
+                    placeholder="Search by name…"
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-controls="person-search-list"
+                    role="combobox"
+                  >
+                  <ul class="daf-picker__list" id="person-search-list" role="listbox" hidden></ul>
+                </div>
+                <div class="daf-chips" id="person-chips" aria-live="polite"></div>
+                <button type="button" class="r-btn r-btn--secondary daf-btn-compact" id="btn-add-another-person">
+                  + Add another person
+                </button>
+              </div>
+            </div>
+
+            <div class="r-field">
+              <label class="r-field__label" for="daf-donor-name">DAF Donor Name (on grant) <span class="daf-opt">Optional</span></label>
+              <p class="daf-field-hint">If this contact doesn’t exist, Raisely will create a new contact.</p>
+              <div class="daf-donor-name-row">
+                <input class="r-field__input" type="text" id="daf-donor-name" name="dafDonorName" placeholder="Alex Morgan" autocomplete="off">
+                <button type="button" class="r-btn r-btn--secondary daf-btn-compact" id="btn-create-contact">Create contact</button>
+              </div>
+              <div class="daf-contact-banner r-card" id="daf-contact-confirm" hidden>
+                <div class="r-card__body daf-contact-banner__inner">
+                  <i class="fa-regular fa-circle-check daf-contact-banner__icon" aria-hidden="true"></i>
+                  <p class="daf-contact-banner__text" id="daf-contact-confirm-text"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-panel__field-grid daf-details__grid">
+              <div class="r-field" style="margin-bottom: var(--space-4);">
+                <label class="r-field__label" for="daf-ack">DAF Acknowledgment Status <span class="daf-opt">Optional</span></label>
+                <select class="dropdown-select daf-select-full" id="daf-ack" name="dafAck">
+                  <option value="">Select…</option>
+                  <option value="not-sent">Not sent</option>
+                  <option value="sent">Sent</option>
+                  <option value="not-required">Not required</option>
+                </select>
+              </div>
+              <div class="r-field" style="margin-bottom: var(--space-4);">
+                <label class="r-field__label" for="daf-check">DAF Check Number <span class="daf-opt">Optional</span></label>
+                <input class="r-field__input" type="text" id="daf-check" name="dafCheck" placeholder="e.g., 4421" autocomplete="off">
+              </div>
+            </div>
+          </div>
+
+          <div class="r-field">
+            <label class="r-field__label" for="message">Your Message</label>
+            <textarea class="admin-panel__textarea daf-textarea-sm" id="message" name="message" rows="3" placeholder="Thank you for supporting our winter appeal."></textarea>
+          </div>
+
+          <div class="admin-panel__checkbox-row">
+            <input type="checkbox" id="anonymous" name="anonymous">
+            <label for="anonymous">Keep my donation anonymous</label>
+          </div>
+
+          <div class="daf-modal__actions">
+            <button type="button" class="r-btn daf-modal__btn-cancel" id="btn-cancel">Cancel</button>
+            <div class="daf-modal__actions-right">
+              <button type="button" class="r-btn r-btn--secondary" id="btn-save-add-another">Save + Add Another</button>
+              <button type="submit" class="r-btn daf-modal__btn-save" id="btn-save-donation">Save Donation</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="r-toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
